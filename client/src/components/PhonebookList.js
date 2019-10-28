@@ -1,15 +1,17 @@
 import React from 'react';
 import PhonebookItem from './PhonebookItem'
+import {connect} from 'react-redux'
+import {loadPhonebook} from '../actions'
 
-export default class PhonebookList extends React.Component {
+class PhonebookList extends React.Component {
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
+        this.props.loadPhonebook();
     }
 
     render() {
-        let listPhonebook = this.props.datas.map((item,index) => {
-            return (<PhonebookItem id={index} name={item.name} phone={item.phone} />)
+        let listPhonebook = this.props.phonebooks.map((item,index) => {
+            return (<PhonebookItem id={index+1} origin_id={item.id} name={item.name} phone={item.phone} />)
         });
         return (
             <tbody>
@@ -18,3 +20,16 @@ export default class PhonebookList extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    phonebooks: state.phonebooks
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    loadPhonebook: () => dispatch(loadPhonebook())
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PhonebookList)

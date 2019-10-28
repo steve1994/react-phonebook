@@ -7,7 +7,7 @@ export default class OneWindow extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {phonebooks:[{name:'Steve',phone:'081222324170'}]}
+        // this.state = {phonebooks:[{name:'Steve',phone:'081222324170'}]}
     }
 
     render() {
@@ -24,7 +24,7 @@ export default class OneWindow extends React.Component {
                   <th scope="col">Action</th>
                 </tr>
               </thead>
-              <PhonebookList datas={this.state.phonebooks} />
+              <PhonebookList />
             </table>
           </div>
         );

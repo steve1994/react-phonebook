@@ -1,29 +1,61 @@
 import React from 'react';
+import {connect} from 'react-redux'
+import {postPhonebook} from '../actions'
 
-export default class AddForm extends React.Component {
+class AddForm extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {name:'',phone:'',isFormHidden:true};
+        this.changeName = this.changeName.bind(this);
+        this.changePhone = this.changePhone.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.changeVisibilityForm = this.changeVisibilityForm.bind(this);
+    }
+
+    changeName(e) {
+        this.setState({name:e.target.value});
+    }
+
+    changePhone(e) {
+        this.setState({phone:e.target.value});
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        if (this.state.name && this.state.phone) {
+            this.props.postPhonebook(this.state.name,this.state.phone);
+            this.setState({name:'',phone:'',isFormHidden:true});
+        }
+    }
+
+    changeVisibilityForm(e) {
+        this.setState({isFormHidden:!this.state.isFormHidden});
+    }
+
     render() {
         return (
           <div>
             <div class="form-group row">
               <div class="form-group col-md-5">
-                <button class="btn btn-primary" id="add">+ add</button>
+                <button class="btn btn-primary" id="add" onClick={this.changeVisibilityForm}>+ add</button>
               </div>
             </div>
-            <form id="add_form" method="post">
+            <form onSubmit={this.handleSubmit} style={this.state.isFormHidden ? {display:'none'} : {display:'block'}}>
               <div class="form-group row">
                 <div class="form-group col-md-5">
                   <label for="name">Name</label>
-                  <input type="text" class="form-control" id="name" placeholder="Name" />
+                  <input type="text" class="form-control" onChange={this.changeName} value={this.state.name} id="name" placeholder="Name" />
                 </div>
                 <div class="form-group col-md-5">
                   <label for="phone">Phone</label>
-                  <input type="text" class="form-control" id="phone" placeholder="Phone" />
+                  <input type="text" class="form-control" onChange={this.changePhone} value={this.state.phone} id="phone" placeholder="Phone" />
                 </div>
                 <div class="form-group col-md-1">
                   <button type="submit" class="btn btn-success">save</button>
                 </div>
                 <div class="form-group col-md-1">
-                  <button type="submit" class="btn btn-warning">cancel</button>
+                  <button class="btn btn-warning" onClick={()=>this.setState({isFormHidden:true})}>cancel</button>
                 </div>
               </div>
             </form>
@@ -31,3 +63,12 @@ export default class AddForm extends React.Component {
         );
     }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+    postPhonebook: (name,phone) => dispatch(postPhonebook(name,phone))
+})
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(AddForm)
