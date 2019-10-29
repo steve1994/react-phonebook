@@ -38,7 +38,13 @@ const phonebooks = (state = [], action) => {
                 return {name:item.name, phone:item.phone, id:item._id, sent:true};
             })
         case 'DELETE_PHONEBOOK':
-            return state.filter((item) => item.id != action.id);
+            return state.filter((item) => item.id !== action.id);
+        case 'SEARCH_PHONEBOOK':
+            return state.filter((item) => {
+                let conditionName = action.name ? (item.name === action.name) : true;
+                let conditionPhone = action.phone ? (item.phone === action.phone) : true;
+                return (conditionName && conditionPhone);
+            })
         case 'DELETE_PHONEBOOK_SUCCESS':
         case 'DELETE_PHONEBOOK_FAILURE':
         case 'EDIT_PHONEBOOK_FAILURE':

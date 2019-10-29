@@ -140,3 +140,15 @@ export const resendPhonebook = (id_fake, name, phone) => {
         })
     }
 }
+
+// SEARCH PHONEBOOK
+
+const searchPhonebookRedux = (name,phone) => ({
+    type : 'SEARCH_PHONEBOOK', name, phone
+})
+
+export const searchPhonebook = (name, phone) => {
+    return dispatch => {
+        dispatch(searchPhonebookRedux(name, phone));
+    }
+}
