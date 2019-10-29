@@ -26,35 +26,39 @@ export const loadPhonebook = () => {
         })
         .catch(function(error) {
             console.error(error);
-            dispatch(loadPhonebookFailure);
+            dispatch(loadPhonebookFailure());
         })
     }
 }
 
 // POST PHONEBOOK
 
-export const postPhonebookSuccess = (phonebook) => ({
-    type: 'POST_PHONEBOOK_SUCCESS', phonebook
+export const postPhonebookSuccess = (phonebooks) => ({
+    type: 'POST_PHONEBOOK_SUCCESS', phonebooks
 })
 
-export const postPhonebookFailure = () => ({
-    type: 'POST_PHONEBOOK_FAILURE'
+export const postPhonebookFailure = (id_fake) => ({
+    type: 'POST_PHONEBOOK_FAILURE', id_fake
 })
 
-const postPhonebookRedux = (name, phone) => ({
-    type: 'POST_PHONEBOOK', name, phone
+const postPhonebookRedux = (id_fake, name, phone) => ({
+    type: 'POST_PHONEBOOK', id_fake, name, phone
 })
 
 export const postPhonebook = (name, phone) => {
+    let id_fake = Date.now();
     return dispatch => {
-        dispatch(postPhonebookRedux(name,phone));
+        dispatch(postPhonebookRedux(id_fake,name,phone));
         return request.post('phonebooks',{name,phone})
         .then(function(response) {
-            dispatch(postPhonebookSuccess(response.data.data));
+            return request.get('phonebooks')
+            .then(function (response) {
+                dispatch(postPhonebookSuccess(response.data));
+            })
         })
         .catch(function(error) {
             console.error(error);
-            dispatch(postPhonebookFailure());
+            dispatch(postPhonebookFailure(id_fake));
         })
     }
 }
@@ -82,7 +86,25 @@ export const deletePhonebook = (id) => {
         })
         .catch(function (error) {
             console.error(error);
-            dispatch(deletePhonebookFailure());
+            alert('Sorry, the data cannot be deleted !')
+        })
+    }
+}
+
+// RESEND PHONEBOOK
+
+export const resendPhonebook = (id_fake, name, phone) => {
+    return dispatch => {
+        return request.post('phonebooks',{name,phone})
+        .then(function (response) {
+            return request.get('phonebooks')
+            .then(function (response) {
+                dispatch(postPhonebookSuccess(response.data));
+            })
+        })
+        .catch(function (error) {
+            console.error(error);
+            dispatch(postPhonebookFailure(id_fake));
         })
     }
 }

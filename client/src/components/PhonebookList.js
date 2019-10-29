@@ -11,7 +11,7 @@ class PhonebookList extends React.Component {
 
     render() {
         let listPhonebook = this.props.phonebooks.map((item,index) => {
-            return (<PhonebookItem id={index+1} origin_id={item.id} name={item.name} phone={item.phone} />)
+            return (<PhonebookItem id={index+1} sent={item.sent} id_fake={item.id_fake} origin_id={item.id} name={item.name} phone={item.phone} />)
         });
         return (
             <tbody>

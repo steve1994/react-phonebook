@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {deletePhonebook} from '../actions'
+import {deletePhonebook,resendPhonebook} from '../actions'
 
 class PhonebookItem extends React.Component {
 
@@ -15,8 +15,10 @@ class PhonebookItem extends React.Component {
               <td>{this.props.name}</td>
               <td>{this.props.phone}</td>
               <td>
-                <a class="btn btn-success">Update</a>&nbsp;
-                <a class="btn btn-danger" onClick={this.props.deletePhonebook}>Delete</a>
+                {this.props.sent
+                    ?   <div><a class="btn btn-success">Update</a>&nbsp;
+                        <a class="btn btn-danger" onClick={this.props.deletePhonebook}>Delete</a></div>
+                    :   <div><a class="btn btn-danger" onClick={this.props.resendPhonebook}>Resend</a></div> }
               </td>
             </tr>
         );
@@ -24,7 +26,8 @@ class PhonebookItem extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    deletePhonebook: () => dispatch(deletePhonebook(ownProps.origin_id))
+    deletePhonebook: () => dispatch(deletePhonebook(ownProps.origin_id)),
+    resendPhonebook: () => dispatch(resendPhonebook(ownProps.id_fake,ownProps.name,ownProps.phone))
 })
 
 export default connect(
