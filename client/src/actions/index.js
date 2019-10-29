@@ -91,6 +91,38 @@ export const deletePhonebook = (id) => {
     }
 }
 
+// EDIT PHONEBOOK
+
+const editPhonebookRedux = (id, name, phone) => ({
+    type: "EDIT_PHONEBOOK", id, name, phone
+})
+
+export const editPhonebookSuccess = (phonebooks) => ({
+    type: "EDIT_PHONEBOOK_SUCCESS", phonebooks
+})
+
+export const editPhonebookFailure = (id) => ({
+    type: "EDIT_PHONEBOOK_FAILURE", id
+})
+
+export const editPhonebook = (id, name, phone) => {
+    return dispatch => {
+        dispatch(editPhonebookRedux(id, name, phone));
+        return request.put(`phonebooks/${id}`,{name, phone})
+        .then(function (response) {
+            return request.get('phonebooks')
+            .then(function (response) {
+                dispatch(editPhonebookSuccess(response.data));
+            })
+        })
+        .catch(function (error) {
+            console.error(error);
+            alert('Sorry, the data cannot be edited !');
+            // dispatch(editPhonebookFailure(id));
+        })
+    }
+}
+
 // RESEND PHONEBOOK
 
 export const resendPhonebook = (id_fake, name, phone) => {
