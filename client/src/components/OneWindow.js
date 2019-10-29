@@ -7,7 +7,6 @@ export default class OneWindow extends React.Component {
 
     constructor(props) {
         super(props);
-        // this.state = {phonebooks:[{name:'Steve',phone:'081222324170'}]}
     }
 
     render() {

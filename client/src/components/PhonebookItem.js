@@ -6,7 +6,7 @@ class PhonebookItem extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {editable:false,nameEdited:'',phoneEdited:''};
+        this.state = {editable:false,nameEdited:'',phoneEdited:'',oldName:this.props.name,oldPhone:this.props.phone};
         this.changeName = this.changeName.bind(this);
         this.changePhone = this.changePhone.bind(this);
         this.editPhonebookSave = this.editPhonebookSave.bind(this);
@@ -25,7 +25,7 @@ class PhonebookItem extends React.Component {
     }
 
     editPhonebookSave(e) {
-        this.props.editPhonebook(this.state.nameEdited,this.state.phoneEdited);
+        this.props.editPhonebook(this.state.nameEdited,this.state.phoneEdited,this.state.oldName,this.state.oldPhone);
         this.setState({editable:false});
     }
 
@@ -59,7 +59,7 @@ class PhonebookItem extends React.Component {
 const mapDispatchToProps = (dispatch, ownProps) => ({
     deletePhonebook: () => dispatch(deletePhonebook(ownProps)),
     resendPhonebook: () => dispatch(resendPhonebook(ownProps.id_fake,ownProps.name,ownProps.phone)),
-    editPhonebook: (name,phone) => dispatch(editPhonebook(ownProps.origin_id,name,phone))
+    editPhonebook: (name,phone,oldName,oldPhone) => dispatch(editPhonebook(ownProps.origin_id,name,phone,oldName,oldPhone))
 })
 
 export default connect(

@@ -101,11 +101,11 @@ export const editPhonebookSuccess = (phonebooks) => ({
     type: "EDIT_PHONEBOOK_SUCCESS", phonebooks
 })
 
-export const editPhonebookFailure = (id) => ({
-    type: "EDIT_PHONEBOOK_FAILURE", id
+export const editPhonebookFailure = (id, oldName, oldPhone) => ({
+    type: "EDIT_PHONEBOOK_FAILURE", id, oldName, oldPhone
 })
 
-export const editPhonebook = (id, name, phone) => {
+export const editPhonebook = (id, name, phone, oldName, oldPhone) => {
     return dispatch => {
         dispatch(editPhonebookRedux(id, name, phone));
         return request.put(`phonebooks/${id}`,{name, phone})
@@ -117,8 +117,7 @@ export const editPhonebook = (id, name, phone) => {
         })
         .catch(function (error) {
             console.error(error);
-            alert('Sorry, the data cannot be edited !');
-            // dispatch(editPhonebookFailure(id));
+            dispatch(editPhonebookFailure(id, oldName, oldPhone));
         })
     }
 }

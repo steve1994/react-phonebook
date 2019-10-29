@@ -37,6 +37,14 @@ const phonebooks = (state = [], action) => {
             return action.phonebooks.map((item,index) => {
                 return {name:item.name, index:index+1, phone:item.phone, id:item._id, sent:true};
             })
+        case 'EDIT_PHONEBOOK_FAILURE':
+            return state.map((item) => {
+                if (item.id === action.id) {
+                    item.name = action.oldName;
+                    item.phone = action.oldPhone;
+                }
+                return item;
+            })
         case 'DELETE_PHONEBOOK':
             return state.filter((item) => item.id !== action.id);
         case 'DELETE_PHONEBOOK_FAILURE':
@@ -53,7 +61,6 @@ const phonebooks = (state = [], action) => {
                 return {name:item.name, phone:item.phone, id:item._id, sent:true};
             })
         case 'DELETE_PHONEBOOK_SUCCESS':
-        case 'EDIT_PHONEBOOK_FAILURE':
         case 'LOAD_PHONEBOOK_FAILURE':
         default:
             return state;
