@@ -38,6 +38,23 @@ router.put('/:idPhonebook', function (req, res) {
     })
 })
 
+router.post('/search',function (req, res) {
+    let filterSearch = {name:req.body.name,phone:req.body.phone};
+    if (!req.body.name) {
+        delete filterSearch['name'];
+    }
+    if (!req.body.phone) {
+        delete filterSearch['phone'];
+    }
+    Phonebook.find(filterSearch, function(err, response) {
+        if (err) {
+            res.status(400).json({'error':err});
+        } else {
+            res.status(200).json(response);
+        }
+    })
+})
+
 router.delete('/:idPhonebook', function (req,res) {
     let idPhonebook = req.params.idPhonebook;
     Phonebook.findOneAndDelete({_id:idPhonebook},function (err,response) {

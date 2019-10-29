@@ -43,6 +43,23 @@ describe('phonebook', function () {
         })
     })
 
+    it('seharusnya dapat menampilkan hasil search list Phonebook', function (done) {
+        chai.request(server)
+        .post('/api/phonebooks/search')
+        .send({name:'Steve',phone:'081222324170'})
+        .end(function (err,res) {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('array');
+            res.body[0].should.have.property('_id');
+            res.body[0].should.have.property('name');
+            res.body[0].should.have.property('phone');
+            res.body[0].name.should.equal('Steve');
+            res.body[0].phone.should.equal('081222324170');
+            done();
+        })
+    })
+
     it('seharusnya dapat mengedit data phonebook yang sudah ada', function (done) {
         chai.request(server)
         .get('/api/phonebooks/')
