@@ -39,7 +39,8 @@ router.put('/:idPhonebook', function (req, res) {
 })
 
 router.post('/search',function (req, res) {
-    let filterSearch = {name:req.body.name,phone:req.body.phone};
+    let filterSearch = {name:{$regex:req.body.name,$options:'i'},
+                        phone:{$regex:req.body.phone,$options:'i'}}
     if (!req.body.name) {
         delete filterSearch['name'];
     }
