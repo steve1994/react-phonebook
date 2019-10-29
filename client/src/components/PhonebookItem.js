@@ -57,7 +57,7 @@ class PhonebookItem extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    deletePhonebook: () => dispatch(deletePhonebook(ownProps.origin_id)),
+    deletePhonebook: () => dispatch(deletePhonebook(ownProps)),
     resendPhonebook: () => dispatch(resendPhonebook(ownProps.id_fake,ownProps.name,ownProps.phone)),
     editPhonebook: (name,phone) => dispatch(editPhonebook(ownProps.origin_id,name,phone))
 })

@@ -69,24 +69,24 @@ const deletePhonebookRedux = (id) => ({
     type: 'DELETE_PHONEBOOK', id
 })
 
-export const deletePhonebookSuccess = (phonebook) => ({
-    type: 'DELETE_PHONEBOOK_SUCCESS', phonebook
+export const deletePhonebookSuccess = () => ({
+    type: 'DELETE_PHONEBOOK_SUCCESS'
 })
 
-export const deletePhonebookFailure = () => ({
-    type: 'DELETE_PHONEBOOK_FAILURE'
+export const deletePhonebookFailure = (props) => ({
+    type: 'DELETE_PHONEBOOK_FAILURE', props
 })
 
-export const deletePhonebook = (id) => {
+export const deletePhonebook = (props) => {
     return dispatch => {
-        dispatch(deletePhonebookRedux(id));
-        return request.delete(`phonebooks/${id}`)
+        dispatch(deletePhonebookRedux(props.origin_id));
+        return request.delete(`phonebooks/${props.origin_id}`)
         .then(function (response) {
-            dispatch(deletePhonebookSuccess(response.data.data));
+            dispatch(deletePhonebookSuccess());
         })
         .catch(function (error) {
             console.error(error);
-            alert('Sorry, the data cannot be deleted !')
+            dispatch(deletePhonebookFailure(props));
         })
     }
 }

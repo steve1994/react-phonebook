@@ -1,8 +1,8 @@
 const phonebooks = (state = [], action) => {
     switch(action.type) {
         case 'LOAD_PHONEBOOK_SUCCESS':
-            return action.phonebooks.map((item) => {
-                return {name:item.name, phone:item.phone, id:item._id, sent:true};
+            return action.phonebooks.map((item,index) => {
+                return {name:item.name, index:index+1, phone:item.phone, id:item._id, sent:true};
             })
         case 'POST_PHONEBOOK':
             return [
@@ -15,8 +15,8 @@ const phonebooks = (state = [], action) => {
                 }
             ]
         case 'POST_PHONEBOOK_SUCCESS':
-            return action.phonebooks.map((item) => {
-                return {name:item.name, phone:item.phone, id:item._id, sent:true};
+            return action.phonebooks.map((item,index) => {
+                return {name:item.name, index:index+1, phone:item.phone, id:item._id, sent:true};
             })
         case 'POST_PHONEBOOK_FAILURE':
             return state.map((item) => {
@@ -34,11 +34,14 @@ const phonebooks = (state = [], action) => {
                 return item;
             })
         case 'EDIT_PHONEBOOK_SUCCESS':
-            return action.phonebooks.map((item) => {
-                return {name:item.name, phone:item.phone, id:item._id, sent:true};
+            return action.phonebooks.map((item,index) => {
+                return {name:item.name, index:index+1, phone:item.phone, id:item._id, sent:true};
             })
         case 'DELETE_PHONEBOOK':
             return state.filter((item) => item.id !== action.id);
+        case 'DELETE_PHONEBOOK_FAILURE':
+            state.splice(action.props.id-1,0,{name:action.props.name,index:action.props.id-1,phone:action.props.phone,id:action.props.origin_id,sent:true});
+            return [...state];
         case 'SEARCH_PHONEBOOK':
             return state.filter((item) => {
                 let conditionName = action.name ? (item.name === action.name) : true;
@@ -50,7 +53,6 @@ const phonebooks = (state = [], action) => {
                 return {name:item.name, phone:item.phone, id:item._id, sent:true};
             })
         case 'DELETE_PHONEBOOK_SUCCESS':
-        case 'DELETE_PHONEBOOK_FAILURE':
         case 'EDIT_PHONEBOOK_FAILURE':
         case 'LOAD_PHONEBOOK_FAILURE':
         default:
