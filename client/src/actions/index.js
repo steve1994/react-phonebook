@@ -147,8 +147,20 @@ const searchPhonebookRedux = (name,phone) => ({
     type : 'SEARCH_PHONEBOOK', name, phone
 })
 
+export const searchPhonebookSuccess = (phonebooks) => ({
+    type : 'SEARCH_PHONEBOOK_SUCCESS', phonebooks
+})
+
 export const searchPhonebook = (name, phone) => {
     return dispatch => {
         dispatch(searchPhonebookRedux(name, phone));
+        return request.post('phonebooks/search',{name,phone})
+        .then(function (response) {
+            dispatch(searchPhonebookSuccess(response.data));
+        })
+        .catch(function (error) {
+            console.error(error);
+            alert('Cannot search phonebook normally !');
+        })
     }
 }

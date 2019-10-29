@@ -45,6 +45,10 @@ const phonebooks = (state = [], action) => {
                 let conditionPhone = action.phone ? (item.phone === action.phone) : true;
                 return (conditionName && conditionPhone);
             })
+        case 'SEARCH_PHONEBOOK_SUCCESS':
+            return action.phonebooks.map((item) => {
+                return {name:item.name, phone:item.phone, id:item._id, sent:true};
+            })
         case 'DELETE_PHONEBOOK_SUCCESS':
         case 'DELETE_PHONEBOOK_FAILURE':
         case 'EDIT_PHONEBOOK_FAILURE':
